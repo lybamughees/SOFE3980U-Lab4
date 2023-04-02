@@ -1,26 +1,68 @@
 pipeline {
-  agent any
+  environment {
+   PROJECT = "deliverable-4-382318"
+	PROJECT = "deliverable-4-382318"
+    APP_NAME = "binary-calculator2"
+	CLUSTER = "gke_deliverable-4-382318_northamerica-northeast1-b_sofe3980u"
+    CLUSTER = "sofe3980u"
+    CLUSTER_ZONE = "northamerica-northeast1-b"
+    IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}"
+    JENKINS_CRED = "green-tract-379622"
+  }
+  
+agent {
+    kubernetes {
+	label 'sample-app'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: cd-jenkins
+  containers:
+  - name: gcloud
+    image: gcr.io/cloud-builders/gcloud
+    //image: google/cloud-sdk:latest
+    command:
+    - cat
+    tty: true
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl
+    command:
+    - cat
+    tty: true
+"""
+}
+  }
+  tools {
+    maven 'maven' 
+  }
   stages {
-    stage('Build') {
+    stage ('Init') {
       steps {
-        // build your application and create a container image
-        sh 'docker build -t my-image .'
-        // push the container image to a registry
-        sh 'docker push gcr.io/my-project/my-image'
+	    checkout scm
+        sh 'echo "Start of Job"'
       }
     }
-    stage('Deploy') {
-      environment {
-        // set the GKE cluster and namespace
-        GKE_CLUSTER = 'gke_shaped-glazing-379621_northamerica-northeast1-b_sofe3980u'
-        GKE_NAMESPACE = 'gke_shaped-glazing-379621_northamerica-northeast1-b_sofe3980u'
-      }
+    //stage ('test') {
+    //  steps {
+    //    sh 'mvn clean test -f ./BinaryCalculatorWebapp/pom.xml'
+    //  }
+    //}
+    stage ('build') {
       steps {
-        // deploy the application to GKE
-        sh "gcloud container clusters get-credentials ${GKE_CLUSTER}"
-        sh "kubectl config set-context --current --namespace=${GKE_NAMESPACE}"
-        sh "kubectl apply -f kubernetes/deployment.yaml"
-        sh "kubectl apply -f kubernetes/service.yaml"
+        sh 'mvn package -DskipTests -f ./BinaryCalculatorWebapp/pom.xml'
+      }
+    }
+    stage('Build and push image with Container Builder') {
+      steps {
+        container('gcloud') {
+          sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
+        }
       }
     }
   }

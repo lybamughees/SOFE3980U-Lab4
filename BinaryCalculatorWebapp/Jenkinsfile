@@ -1,28 +1,26 @@
 pipeline {
   agent any
-  tools {
-    maven 'maven' 
-  }
   stages {
-    stage ('Init') {
+    stage('Build') {
       steps {
-        sh 'echo "Start of Job"'
-        sh 'ls -la'
+        // build your application and create a container image
+        sh 'docker build -t my-image .'
+        // push the container image to a registry
+        sh 'docker push gcr.io/my-project/my-image'
       }
     }
-    stage ('test') {
-      steps {
-        sh 'mvn clean test -f ./BinaryCalculatorWebapp/pom.xml'
+    stage('Deploy') {
+      environment {
+        // set the GKE cluster and namespace
+        GKE_CLUSTER = 'my-cluster'
+        GKE_NAMESPACE = 'my-namespace'
       }
-    }
-    stage ('build') {
       steps {
-        sh 'mvn package -DskipTests -f ./BinaryCalculatorWebapp/pom.xml'
-      }
-    }
-    stage ('Deploy') {
-      steps {
-        sh 'echo "bye bye"'
+        // deploy the application to GKE
+        sh "gcloud container clusters get-credentials ${GKE_CLUSTER}"
+        sh "kubectl config set-context --current --namespace=${GKE_NAMESPACE}"
+        sh "kubectl apply -f kubernetes/deployment.yaml"
+        sh "kubectl apply -f kubernetes/service.yaml"
       }
     }
   }

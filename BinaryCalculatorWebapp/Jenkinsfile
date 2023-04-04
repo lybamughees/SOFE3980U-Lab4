@@ -2,7 +2,7 @@ pipeline {
   environment {
    PROJECT = "deliverable-4-382318"
 	//PROJECT = "deliverable-4-382318"
-    APP_NAME = "binary-calculator2"
+    APP_NAME = "binary-calculator"
 	//CLUSTER = "gke_deliverable-4-382318_northamerica-northeast1-b_sofe3980u"
     CLUSTER = "sofe3980u"
     CLUSTER_ZONE = "northamerica-northeast1-b"

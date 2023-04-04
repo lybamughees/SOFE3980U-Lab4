@@ -1,72 +1,65 @@
 pipeline {
   environment {
    PROJECT = "deliverable-4-382318"
-	//PROJECT = "deliverable-4-382318"
-    APP_NAME = "binary-calculator2"
-	//CLUSTER = "gke_deliverable-4-382318_northamerica-northeast1-b_sofe3980u"
-    CLUSTER = "sofe3980u"
-    CLUSTER_ZONE = "northamerica-northeast1-b"
-    IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}"
-    JENKINS_CRED = "deliverable-4-382318"
+   APP_NAME = "binary-calculator2"
+   CLUSTER = "sofe3980u"
+   CLUSTER_ZONE = "northamerica-northeast1-b"
+   IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}"
+   JENKINS_CRED = "deliverable-4-382318"
   }
   
-agent {
+  agent {
     kubernetes {
-	label 'sample-app'
+      label 'sample-app'
       defaultContainer 'jnlp'
       yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-labels:
-  component: ci
-spec:
-  # Use service account that can deploy to all namespaces
-  serviceAccountName: cd-jenkins
-  containers:
-  - name: gcloud
-    image: gcr.io/cloud-builders/gcloud
-    //image: google/cloud-sdk:latest
-    command:
-    - cat
-    tty: true
-  - name: kubectl
-    image: gcr.io/cloud-builders/kubectl
-    command:
-    - cat
-    tty: true
-"""
-}
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        labels:
+          component: ci
+      spec:
+        # Use service account that can deploy to all namespaces
+        serviceAccountName: cd-jenkins
+        containers:
+        - name: gcloud
+          image: gcr.io/cloud-builders/gcloud
+          command:
+          - cat
+          tty: true
+        - name: kubectl
+          image: gcr.io/cloud-builders/kubectl
+          command:
+          - cat
+          tty: true
+      """
+    }
   }
+  
   tools {
     maven 'maven' 
   }
+  
   stages {
     stage ('Init') {
       steps {
-	    checkout scm
+        checkout scm
         sh 'echo "Start of Job"'
       }
     }
-    //stage ('test') {
-    //  steps {
-    //    sh 'mvn clean test -f ./BinaryCalculatorWebapp/pom.xml'
-    //  }
-    //}
+    
     stage ('build') {
       steps {
         sh 'mvn package -DskipTests -f ./BinaryCalculatorWebapp/pom.xml'
       }
     }
-      stage('Build and push image with Container Builder') {
-        steps {
-                sh '/builder/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=/path/to/your/key.json'
-                sh '/builder/google-cloud-sdk/bin/gcloud config set project your-project-id'
-                sh '/builder/google-cloud-sdk/bin/gcloud builds submit --no-source --tag gcr.io/deliverable-4-382318/binary-calculator2 ./BinaryCalculatorWebapp/'
+    
+    stage('Build and push image with Container Builder') {
+      steps {
+        sh 'gcloud auth activate-service-account --key-file=/path/to/your/key.json'
+        sh 'gcloud config set project ${PROJECT}'
+        sh 'gcloud builds submit --no-source --tag ${IMAGE_TAG} ./BinaryCalculatorWebapp/'
       }
     }
   }
 }
-
-        }
-    

@@ -1,6 +1,6 @@
 pipeline {
   environment {
-   PROJECT = "shaped-glazing-379621"
+   PROJECT = "deliverable-4-382318"
 	//PROJECT = "shaped-glazing-3796218"
     APP_NAME = "binary-calculator2"
 	//CLUSTER = "gke_shaped-glazing-379621_northamerica-northeast1-b_sofe3980u"

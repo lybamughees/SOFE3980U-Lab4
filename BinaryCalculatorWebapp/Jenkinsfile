@@ -1,13 +1,13 @@
 pipeline {
   environment {
-   PROJECT = "deliverable-4-382318"
+   PROJECT = "shaped-glazing-379621"
 	//PROJECT = "deliverable-4-382318"
     APP_NAME = "binary-calculator2"
 	//CLUSTER = "gke_deliverable-4-382318_northamerica-northeast1-b_sofe3980u"
     CLUSTER = "sofe3980u"
     CLUSTER_ZONE = "northamerica-northeast1-b"
     IMAGE_TAG = "gcr.io/${PROJECT}/${APP_NAME}"
-    JENKINS_CRED = "deliverable-4-382318"
+    JENKINS_CRED = "shaped-glazing-379621"
   }
   
 agent {

@@ -61,7 +61,17 @@ spec:
     stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
-          sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
+          pipeline {
+  agent any
+  stages {
+    stage('Build and Deploy') {
+      steps {
+        sh 'gcloud builds submit --no-source --tag gcr.io/deliverable-4-382318/binary-calculator2 ./BinaryCalculatorWebapp/'
+      }
+    }
+  }
+}
+
         }
       }
     }

@@ -58,13 +58,12 @@ spec:
         sh 'mvn package -DskipTests -f ./BinaryCalculatorWebapp/pom.xml'
       }
     }
-      stage('Build and push image with Container Builder') {
-        steps {
-                sh '/builder/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file=/path/to/your/key.json'
-                sh '/builder/google-cloud-sdk/bin/gcloud config set project your-project-id'
-                sh '/builder/google-cloud-sdk/bin/gcloud builds submit --no-source --tag gcr.io/deliverable-4-382318/binary-calculator2 ./BinaryCalculatorWebapp/'
+stage('Build and push image with Container Builder') {
+      steps {
+        container('gcloud') {
+          sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
       }
     }
   }
 }
- 
+} 

@@ -62,18 +62,7 @@ stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
 sh "/builder/google-cloud-sdk/bin/gcloud auth activate-service-account shaped-glazing-379621@shaped-glazing-379621.iam.gserviceaccount.com
- --key-file= {
-  "type": "service_account",
-  "project_id": "shaped-glazing-379621",
-  "private_key_id": "4f903197448415180ed82c4ed026a57b49f72b57",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCpItKI8bfjv6mx\nKy/PmCPPLVeeFDqBMyMLEc8WILHiwHqmszwBvHKacjnfFucpXdjS6g9V93jvD5tf\nRDqgLbaxerPQvnQ8gQ2vYVBEtFSUXm3mleXuJrdNmdCvHdbG+WHifMjlgBo7mijc\n+COpg5NvzVsFyWyZ4pjutL4zZdEx76tnRjBT8RxCvaTw/4hJNdoqfKIDGHTbQnKd\n3aZw19mLqjav30LtXNzBFvTfgXg8pa5Q17VGHATZ5POJys24Eguo1rfzOi/h3Yft\nQ6XobMd9HY+MztbC5WGUEqaoL+KmZC15k1Kwhetu+JPD8jPiyIwTv3tBS4d3FwpG\nRjcgR4aPAgMBAAECggEAJL28R2Re4noFpkdv5OQzTzOV13CkfuF5aNOvDSsACXZv\njlvcGrJxoMxUdvpWL93DlpmiyDVwj1nwEgNTyuzzRV2Wxy9AN85/BwyYL7yOrQZQ\nUGlan9/ILPLPauML/4A3+8fIqlYoHK9x1gKPWKkM85oD/l9RmKIpP52Cvc6N4Y9I\nlmAKtFMIflnMukCH1iUJ4movdMPQL2klJrf0ozK0fyhuVri1OhV5PGM8VB+1G0nl\nmtoba6cTQGoEsDmrIhqd5/AcF1uPDCs8MyBpbPAWaR3erz5A2VJaPVRCt/4uSAZK\nMSkzbroU1gFHulfbobbL6sQ2l3Y3wc8IIyv0od4ZlQKBgQDhbPicwSFwi4jBro0b\n26xmgYTh0fdSpIRcUpwxspvvFiPbKhbNKoPObFsNpkbmrZjrdTCJKLv39Trg1Bj/\nLN7V5gmJqdF8r29NcgFNZEAyggg+1bTQiBWDr++WhYJyMZ1x1aAT/Q/6GG1i8W6N\nRlE6ELZt0GHPWqUAu6G9ShCilQKBgQDAE2mZkqdyy77l1H3gX1DBEroza88FHXHq\nGMdHv9+MTt1tGOIvIbwph/upzwkmadYNkYusS102AAl5dpSbTuuIpdLDgGUkKhvd\nT301b6yri2IjQ4qyk4yc+RqaBoUCzG2TF47b6NS02q6VgENm2tsSpr2cnoJ2gOV7\newO2O3m/kwKBgBL659va7wPY28Ti+4KS9msTEKsq0JYmv/Y+BmSw0yxIQvCbFJxl\nrf9dZDU8ANA/YZbBoTqLMXhpL3HqqcgicQi1e6wZnkfPRaHRrYZkoHsgM62GtNix\n/I2/7H5R82/F+amyAO5t6kB2eg9QoKxIdWJcMeABIZsh2K69HZsgd1IZAoGBALmu\nSoiewGd2VZ4i1GkiW5O6QezRzLiaJXRz7boL39TorJ/5zTZY+2h+v6gBsEvFRpup\nVwgBdyNr17znCHQ3T/SysVQzfBMA7hz86gLNaXQQc5e5hIxrnSRmn/PEV7ND4q2u\nuXkX1QDc4qc97mqxKdUXAfg1N9PNeYrsecMiLeknAoGBAJBnPYy47f32xiDidGIb\nVHmS+ntMXzbGQLN/9leJ6bJ2HybEMt4Cg6UQqOCyM7U6zNNOxn+we3d/MVKLozVH\nFVKsYHa5rDbDbv8ZtipcMe03K9+0i8pNuFC6C89BX2c/yKRpOU17T8y4HciErT7L\nEOMl2rfD+HAL9si5eRqVGndT\n-----END PRIVATE KEY-----\n",
-  "client_email": "shaped-glazing-379621@shaped-glazing-379621.iam.gserviceaccount.com",
-  "client_id": "103587063817953316329",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/shaped-glazing-379621%40shaped-glazing-379621.iam.gserviceaccount.com"
-}
+ --key-file= ./shaped-glazing-379621-4f9031974484.json
 --project=shaped-glazing-379621"
 sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
 }

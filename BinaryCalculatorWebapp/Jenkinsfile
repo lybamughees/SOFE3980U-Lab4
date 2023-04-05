@@ -61,7 +61,7 @@ spec:
 stage('Build and push image with Container Builder') {
       steps {
         container('gcloud') {
-sh "/builder/google-cloud-sdk/bin/gcloud auth activate-service-account shaped-glazing-379621@shaped-glazing-379621.iam.gserviceaccount.com --key-file= ./shaped-glazing-379621-4f9031974484.json --project=shaped-glazing-379621"
+sh "/builder/google-cloud-sdk/bin/gcloud auth activate-service-account shaped-glazing-379621@shaped-glazing-379621.iam.gserviceaccount.com --key-file= https://github.com/lybamughees/SOFE3980U-Lab4/blob/main/shaped-glazing-379621-4f9031974484.json --project=shaped-glazing-379621"
 sh "/builder/google-cloud-sdk/bin/gcloud builds submit -t ${IMAGE_TAG} ./BinaryCalculatorWebapp/"
 }
 
